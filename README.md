@@ -1,6 +1,5 @@
 # le
-Living entities (Le) and lists (Ll), built off rx
-Have a reactive model with (almost) no boilerplate
+Living entities (Le) and lists (Ll), built off rx. Enjoy a reactive model with (almost) no boilerplate
 
 Very small payload and learning curve, enormous power.
 
@@ -9,6 +8,7 @@ Currently using this as our app store with React, beats flux anyday
 ## Quick Use
 
 Pop a model, subclassing Le is _better_ but unnecessary
+
 ```
 // model.js
 import {Le, Ll} from 'le'
@@ -23,6 +23,7 @@ module.exports = {
 }
 ```
 
+Read and subscribe!
 
 ```
 // components/person.js
