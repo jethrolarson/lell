@@ -1,0 +1,41 @@
+{
+  "name": "le",
+  "version": "1.0.0",
+  "description": "Easy observable classes and lists",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arkverse/le.git"
+  },
+  "keywords": [
+    "rx",
+    "observable",
+    "pubsub",
+    "subscriber",
+    "lists",
+    "entities",
+    "framework"
+  ],
+  "author": "z",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arkverse/le/issues"
+  },
+  "homepage": "https://github.com/arkverse/le#readme",
+  "dependencies": {
+    "lodash": "^3.10.1",
+    "rx": "^4.0.7"
+  },
+  "devDependencies": {
+    "babel": "^6.3.26",
+    "chai": "^3.4.1",
+    "gulp": "^3.9.0",
+    "gulp-babel": "^6.1.1",
+    "gulp-jshint": "^2.0.0",
+    "gulp-mocha": "^2.2.0",
+    "mocha": "^2.3.4"
+  }
+}
