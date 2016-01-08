@@ -6,6 +6,8 @@ class Le {
   constructor(state) {
     var self = this
     _.each(state, (s, k) => {
+      if (k == '_actions')
+        return;
       Object.defineProperties(this, {
         ['_z' + k]:{
           enumerable:false,
@@ -20,21 +22,25 @@ class Le {
           set: (v) => {
             self['_z' + k] = v
             self['subject'].onNext(self)
-            self.superSubject.onNext({key:k,obj:self})
           }
         }
       })
     })
     this.subject = new Rx.Subject()
-    if (this.Actions) {
+    if (this._actions) {
       var self = this
-      _.each(this.Actions, (a, k) => {
+      _.each(this._actions, (a, k) => {
+        if (!_.isFunction(a))
+          return
         this[k] = function() {
           if (a.apply(self, arguments))
             self.subject.onNext(state)
         }
       })
     }
+  }
+  silentUpdate(key, value) {
+    this['_z' + key] = value
   }
   subscribe(onNext, onCompleted, onError) {
     return this.subject.subscribe(onNext, onCompleted, onError)
