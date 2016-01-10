@@ -157,7 +157,7 @@ You need to make changes through the array through the Lls methods `addItems`, `
 
 We can make a simple living list
 
-```
+```javascript
 import {Ll} from 'lell'
 //or
 var Ll = require('lell').Ll
@@ -184,7 +184,7 @@ livingPeople.setItems([abe, kennedy])
 
 This is where Lls start getting good, you can supply a sort key/func to your Ll and your list will be sorted (borrows lodash `_.sortBy`)
 
-```
+```javascript
 
 var people = [{name:'z', power_level:9001}, {name:'y', power_level:9000}]
 var livingPeople = new Ll({people, sort:'power_level'})
@@ -199,7 +199,7 @@ livingPeople.addItems({name:'x', power_level:8999})
 
 Okay, that wasn't _that_ cool, but Ll's are best when holding Le's
 
-```
+```javascript
 var livingPersonZ = new Person({name:'z',power_level:8999})
 var livingPersonY = new Person({name:'y',power_level:9000})
 
@@ -223,7 +223,7 @@ Cool, huh? We have a reactive list
 
 You can listen to all of the items in a list, so when *any* Le in an Ll changes, you can be notified with that Le
 
-```
+```javascript
 
 livingPeople.subscribeEach((aPerson) => console.log(aPerson.power_level))
 
@@ -235,7 +235,7 @@ livingPersonZ.power_level++
 
 The observables are available to you, one for the list, `subject`, and one for the subscribeEach, `itemChangeSubject`
 
-```
+```javascript
 // note, you need to pluck people, because the root subject signals with the Le {people, sort}
 livingPeople.subject.pluck('people').map(doSomething).subscribe(listen)
 
@@ -246,7 +246,7 @@ livingPeople.subject.pluck('power_level').average().subscribe(useAverage)
 
 It really makes things convenient
 
-```
+```javascript
 import {Ll} from 'lell'
 import _ from 'lodash'
 
