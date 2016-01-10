@@ -22,11 +22,13 @@ class Le {
           set: (v) => {
             self['_z' + k] = v
             self['subject'].onNext(self)
+            self.superSubject.onNext({obj:self,key:k})
           }
         }
       })
     })
     this.subject = new Rx.Subject()
+    this.superSubject = new Rx.Subject()
     if (this._actions) {
       var self = this
       _.each(this._actions, (a, k) => {

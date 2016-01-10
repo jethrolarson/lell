@@ -11,7 +11,7 @@ Pop a model, subclassing Le is _better_ but unnecessary
 
 ```
 // model.js
-import {Le, Ll} from 'le'
+import {Le, Ll} from 'lell'
 
 
 var livingPerson = new Person({name:'z',power_level:9000}) // if person extends Le
@@ -62,10 +62,10 @@ npm install --save le
 Then require/import:
 
 ```
-import {Le, Ll} from 'le'
+import {Le, Ll} from 'lell'
 //or
-var Le = require('le').Le
-var Ll = require('le').Ll
+var Le = require('lell').Le
+var Ll = require('lell').Ll
 ```
 
 ## Usage
@@ -77,7 +77,7 @@ Just instantiate an Le with a payload
 
 The only keys that cause events are the ones passed into the constructor
 ```
-import {Le} from 'le'
+import {Le} from 'lell'
 
 var aPerson = {name:'z',power_level:9000}
 
@@ -94,7 +94,7 @@ aLivingPerson.power_level++
 Extending an Le is only necessary if you can't init with all your properties or you just want convenience methods (like ajax requests)
 The living properties are only the ones we initialize with, so we have have to make sure our initial state holds all keys we wish to cause updates
 ```
-import {Le} from 'le'
+import {Le} from 'lell'
 import _ from 'lodash'
 
 var defaultState = {
@@ -158,9 +158,9 @@ You need to make changes through the array through the Lls methods `addItems`, `
 We can make a simple living list
 
 ```
-import {Ll} from 'le'
+import {Ll} from 'lell'
 //or
-var Ll = require('le').Ll
+var Ll = require('lell').Ll
 
 var abe = ...
 var bush = ...
@@ -247,7 +247,7 @@ livingPeople.subject.pluck('power_level').average().subscribe(useAverage)
 It really makes things convenient
 
 ```
-import {Ll} from 'Le'
+import {Ll} from 'lell'
 import _ from 'lodash'
 
 var defaultState = {

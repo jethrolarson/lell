@@ -43,8 +43,8 @@ var Ll = function (_Le) {
       for (var _iterator = array[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
         var l = _step.value;
 
-        if (l.subscribe) {
-          l.subcribe(_this._itemChanged.bind(_this));
+        if (l.superSubject) {
+          l.superSubject.subscribe(_this._itemChanged.bind(_this));
         }
       }
     } catch (err) {
@@ -83,7 +83,7 @@ var Ll = function (_Le) {
         for (var _iterator2 = is[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
           var i = _step2.value;
 
-          if (i.subscribe) i.subscribe(this._itemChanged.bind(this));
+          if (i.superSubject) i.superSubject.subscribe(this._itemChanged.bind(this));
         }
       } catch (err) {
         _didIteratorError2 = true;
@@ -117,7 +117,7 @@ var Ll = function (_Le) {
         for (var _iterator3 = is[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
           var i = _step3.value;
 
-          if (i.subscribe) i.subscribe(this._itemChanged.bind(this));
+          if (i.superSubject) i.superSubject.subscribe(this._itemChanged.bind(this));
         }
       } catch (err) {
         _didIteratorError3 = true;
@@ -179,7 +179,7 @@ var Ll = function (_Le) {
     }
   }, {
     key: '_sorter',
-    value: function _sorter() {
+    get: function get() {
       return this._zSortKey || this._zSortFunc;
     }
   }]);
@@ -187,4 +187,4 @@ var Ll = function (_Le) {
   return Ll;
 }(Le);
 
-module.exports = ObservableCollection;
+module.exports = Ll;

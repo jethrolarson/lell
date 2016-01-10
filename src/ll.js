@@ -23,8 +23,8 @@ class Ll extends Le {
     this._zSortKey = sort_key
     this._zSortFunc = sort_func
     for (var l of array) {
-      if (l.subscribe) {
-        l.subcribe(this._itemChanged.bind(this))
+      if (l.superSubject) {
+        l.superSubject.subscribe(this._itemChanged.bind(this))
       }
     }
     this.itemChangeSubject = new Rx.Subject()
@@ -38,8 +38,8 @@ class Ll extends Le {
       arr = _.sortBy(is, this._sorter)
     }
     for (var i of is) {
-      if (i.subscribe)
-        i.subscribe(this._itemChanged.bind(this))
+      if (i.superSubject)
+        i.superSubject.subscribe(this._itemChanged.bind(this))
     }
     this[this._zArrayKey] = arr
   }
@@ -49,8 +49,8 @@ class Ll extends Le {
     }
     this[this._zArrayKey] = is
     for (var i of is) {
-      if (i.subscribe)
-        i.subscribe(this._itemChanged.bind(this))
+      if (i.superSubject)
+        i.superSubject.subscribe(this._itemChanged.bind(this))
     }
   }
   removeItems(is) {
@@ -89,9 +89,9 @@ class Ll extends Le {
       }
     }
   }
-  _sorter() {
+  get _sorter() {
     return this._zSortKey || this._zSortFunc
   }
 }
 
-module.exports = ObservableCollection
+module.exports = Ll

@@ -5,7 +5,10 @@
   "main": "dist/i.js",
   "scripts": {
     "compile": "babel --presets es2015 -d dist/ src/",
-    "prepublish": "npm run compile"
+    "compile-test": "babel --preset es2015 -d test-dist/ test/",
+    "prepublish": "npm run compile",
+    "pretest": "npm run compile && npm run compile-test",
+    "test": "node ./test-dist/i.js"
   },
   "repository": {
     "type": "git",
@@ -34,6 +37,7 @@
     "babel": "^6.3.26",
     "babel-cli": "^6.4.0",
     "babel-preset-es2015": "^6.3.13",
+    "babel-register": "^6.3.13",
     "chai": "^3.4.1",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",

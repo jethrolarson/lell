@@ -32,10 +32,12 @@ var Le = function () {
         set: function set(v) {
           self['_z' + k] = v;
           self['subject'].onNext(self);
+          self.superSubject.onNext({ obj: self, key: k });
         }
       }), _Object$definePropert));
     });
     this.subject = new Rx.Subject();
+    this.superSubject = new Rx.Subject();
     if (this._actions) {
       var self = this;
       _.each(this._actions, function (a, k) {
