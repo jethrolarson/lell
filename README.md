@@ -1,4 +1,4 @@
-# le
+# lell
 Living entities (Le) and lists (Ll), built off rx. Enjoy a reactive model with (almost) no boilerplate
 
 Very small payload and learning curve, enormous power.
@@ -9,7 +9,7 @@ Currently using this as our app store with React, beats flux anyday
 
 Pop a model, subclassing Le is _better_ but unnecessary
 
-```
+```javascript
 // model.js
 import {Le, Ll} from 'lell'
 
@@ -25,7 +25,7 @@ module.exports = {
 
 Read and subscribe!
 
-```
+```javascript
 // components/person.js
 var model = require('./model.js')
 
@@ -61,7 +61,7 @@ npm install --save le
 
 Then require/import:
 
-```
+```javascript
 import {Le, Ll} from 'lell'
 //or
 var Le = require('lell').Le
@@ -76,7 +76,7 @@ var Ll = require('lell').Ll
 Just instantiate an Le with a payload
 
 The only keys that cause events are the ones passed into the constructor
-```
+```javascript
 import {Le} from 'lell'
 
 var aPerson = {name:'z',power_level:9000}
@@ -93,7 +93,7 @@ aLivingPerson.power_level++
 ##### An observable class
 Extending an Le is only necessary if you can't init with all your properties or you just want convenience methods (like ajax requests)
 The living properties are only the ones we initialize with, so we have have to make sure our initial state holds all keys we wish to cause updates
-```
+```javascript
 import {Le} from 'lell'
 import _ from 'lodash'
 
@@ -129,7 +129,7 @@ aLivingPerson.doSomeAsyncWork()
 
 The Rx observable subject is made available to you:
 
-```
+```javascript
 aLivingPerson.subject.pluck('power_level').subscribe((power_level) => console.log(power_level))
 
 aLivingPerson.power_level = 9000
@@ -140,7 +140,7 @@ aLivingPerson.power_level = 9000
 
 Update your instance without kicking off an update
 
-```
+```javascript
 aLivingPerson.subscribe((p) => console.log(p))
 
 aLivingPerson.silentUpdate('power_level', 8999)
