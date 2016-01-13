@@ -14,9 +14,10 @@ Pop a model, subclassing Le is _better_ but unnecessary
 import {Le, Ll} from 'lell'
 
 
-var livingPerson = new Person({name:'z',power_level:9000}) // if person extends Le
-//or
 var livingPerson = new Le({name:'z', power_level:9000})
+// or
+var livingPerson = new Person({name:'z',power_level:9000}) // if person extends Le
+
 
 module.exports = {
   person:livingPerson
