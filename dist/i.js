@@ -4,6 +4,6 @@ var Le = require('./le');
 var Ll = require('./ll');
 
 module.exports = {
-  Le: Le,
-  Ll: Ll
+	Le: Le,
+	Ll: Ll
 };

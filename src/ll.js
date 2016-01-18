@@ -1,6 +1,6 @@
 
 
-var Le = require('./Le')
+var Le = require('./le')
 var _ = require('lodash')
 var Rx = require('rx')
 

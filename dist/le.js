@@ -10,68 +10,67 @@ var Rx = require('rx');
 var _ = require('lodash');
 
 var Le = function () {
-  function Le(state) {
-    var _this = this;
+	function Le(state) {
+		var _this = this;
 
-    _classCallCheck(this, Le);
+		_classCallCheck(this, Le);
 
-    var self = this;
-    _.each(state, function (s, k) {
-      var _Object$definePropert;
+		var self = this;
+		_.each(state, function (s, k) {
+			var _Object$definePropert;
 
-      if (k == '_actions') return;
-      Object.defineProperties(_this, (_Object$definePropert = {}, _defineProperty(_Object$definePropert, '_z' + k, {
-        enumerable: false,
-        writable: true,
-        value: s
-      }), _defineProperty(_Object$definePropert, k, {
-        enumerable: true,
-        get: function get() {
-          return self['_z' + k];
-        },
-        set: function set(v) {
-          self['_z' + k] = v;
-          self['subject'].onNext(self);
-          self.superSubject.onNext({ obj: self, key: k });
-        }
-      }), _Object$definePropert));
-    });
-    this.subject = new Rx.Subject();
-    this.superSubject = new Rx.Subject();
-    if (this._actions) {
-      var self = this;
-      _.each(this._actions, function (a, k) {
-        if (!_.isFunction(a)) return;
-        _this[k] = function () {
-          if (a.apply(self, arguments)) self.subject.onNext(state);
-        };
-      });
-    }
-  }
+			if (k == '_actions') return;
+			Object.defineProperties(_this, (_Object$definePropert = {}, _defineProperty(_Object$definePropert, '_z' + k, {
+				enumerable: false,
+				writable: true,
+				value: s
+			}), _defineProperty(_Object$definePropert, k, {
+				enumerable: true,
+				get: function get() {
+					return self['_z' + k];
+				},
+				set: function set(v) {
+					self['_z' + k] = v;
+					self['subject'].onNext(self);
+					self.superSubject.onNext({ obj: self, key: k });
+				}
+			}), _Object$definePropert));
+		});
+		this.subject = new Rx.Subject();
+		this.superSubject = new Rx.Subject();
+		if (this._actions) {
+			_.each(this._actions, function (a, k) {
+				if (!_.isFunction(a)) return;
+				_this[k] = function () {
+					if (a.apply(self, arguments)) self.subject.onNext(state);
+				};
+			});
+		}
+	}
 
-  _createClass(Le, [{
-    key: 'silentUpdate',
-    value: function silentUpdate(key, value) {
-      this['_z' + key] = value;
-    }
-  }, {
-    key: 'subscribe',
-    value: function subscribe(onNext, onCompleted, onError) {
-      return this.subject.subscribe(onNext, onCompleted, onError);
-    }
-  }, {
-    key: 'fill',
-    value: function fill(state) {
-      Object.assign(this, state);
-    }
-  }, {
-    key: 'toJSON',
-    value: function toJSON() {
-      return _.omit(this, ['toJSON', 'fill', 'superSubscribe', 'subscribe', 'subject', 'superSubject', 'Actions']);
-    }
-  }]);
+	_createClass(Le, [{
+		key: 'silentUpdate',
+		value: function silentUpdate(key, value) {
+			this['_z' + key] = value;
+		}
+	}, {
+		key: 'subscribe',
+		value: function subscribe(onNext, onCompleted, onError) {
+			return this.subject.subscribe(onNext, onCompleted, onError);
+		}
+	}, {
+		key: 'fill',
+		value: function fill(state) {
+			Object.assign(this, state);
+		}
+	}, {
+		key: 'toJSON',
+		value: function toJSON() {
+			return _.omit(this, ['toJSON', 'fill', 'superSubscribe', 'subscribe', 'subject', 'superSubject', 'Actions']);
+		}
+	}]);
 
-  return Le;
+	return Le;
 }();
 
 module.exports = Le;

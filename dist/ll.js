@@ -10,181 +10,161 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Le = require('./Le');
+var Le = require('./le');
 var _ = require('lodash');
 var Rx = require('rx');
 
+var doSub = function doSub(is) {
+	var _iteratorNormalCompletion = true;
+	var _didIteratorError = false;
+	var _iteratorError = undefined;
+
+	try {
+		for (var _iterator = is[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+			var i = _step.value;
+
+			if (i.superSubject) i.superSubject.subscribe(this._itemChanged.bind(this));
+		}
+	} catch (err) {
+		_didIteratorError = true;
+		_iteratorError = err;
+	} finally {
+		try {
+			if (!_iteratorNormalCompletion && _iterator.return) {
+				_iterator.return();
+			}
+		} finally {
+			if (_didIteratorError) {
+				throw _iteratorError;
+			}
+		}
+	}
+};
+
 var Ll = function (_Le) {
-  _inherits(Ll, _Le);
+	_inherits(Ll, _Le);
 
-  function Ll(state) {
-    _classCallCheck(this, Ll);
+	function Ll(state) {
+		_classCallCheck(this, Ll);
 
-    var array_key, sort_key, sort_func, array;
-    _.each(state, function (i, k) {
-      if (Array.isArray(i)) {
-        array_key = k;
-        array = i;
-      } else if (k == 'sort') {
-        if (_.isString(i)) sort_key = i;else if (_.isFunction(i)) sort_func = i;
-      }
-    });
+		var array_key, sort_key, sort_func, array;
+		_.each(state, function (i, k) {
+			if (Array.isArray(i)) {
+				array_key = k;
+				array = i;
+			} else if (k == 'sort') {
+				if (_.isString(i)) sort_key = i;else if (_.isFunction(i)) sort_func = i;
+			}
+		});
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Ll).call(this, _defineProperty({}, array_key, array)));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Ll).call(this, _defineProperty({}, array_key, array)));
 
-    _this._zArrayKey = array_key;
-    _this._zSortKey = sort_key;
-    _this._zSortFunc = sort_func;
-    var _iteratorNormalCompletion = true;
-    var _didIteratorError = false;
-    var _iteratorError = undefined;
+		_this._zArrayKey = array_key;
+		_this._zSortKey = sort_key;
+		_this._zSortFunc = sort_func;
+		var _iteratorNormalCompletion2 = true;
+		var _didIteratorError2 = false;
+		var _iteratorError2 = undefined;
 
-    try {
-      for (var _iterator = array[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-        var l = _step.value;
+		try {
+			for (var _iterator2 = array[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+				var l = _step2.value;
 
-        if (l.superSubject) {
-          l.superSubject.subscribe(_this._itemChanged.bind(_this));
-        }
-      }
-    } catch (err) {
-      _didIteratorError = true;
-      _iteratorError = err;
-    } finally {
-      try {
-        if (!_iteratorNormalCompletion && _iterator.return) {
-          _iterator.return();
-        }
-      } finally {
-        if (_didIteratorError) {
-          throw _iteratorError;
-        }
-      }
-    }
+				if (l.superSubject) {
+					l.superSubject.subscribe(_this._itemChanged.bind(_this));
+				}
+			}
+		} catch (err) {
+			_didIteratorError2 = true;
+			_iteratorError2 = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion2 && _iterator2.return) {
+					_iterator2.return();
+				}
+			} finally {
+				if (_didIteratorError2) {
+					throw _iteratorError2;
+				}
+			}
+		}
 
-    _this.itemChangeSubject = new Rx.Subject();
-    _this.subject = new Rx.Subject();
-    return _this;
-  }
+		_this.itemChangeSubject = new Rx.Subject();
+		_this.subject = new Rx.Subject();
+		return _this;
+	}
 
-  _createClass(Ll, [{
-    key: 'addItems',
-    value: function addItems(is) {
-      if (!_.isArray(is)) is = [is];
-      var arr = this[this._zArrayKey].concat(is);
-      if (this._sorter) {
-        arr = _.sortBy(is, this._sorter);
-      }
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
+	_createClass(Ll, [{
+		key: 'addItems',
+		value: function addItems(is) {
+			if (!_.isArray(is)) is = [is];
+			var arr = this[this._zArrayKey].concat(is);
+			if (this._sorter) {
+				arr = _.sortBy(is, this._sorter);
+			}
+			doSub.call(this, is);
+			this[this._zArrayKey] = arr;
+		}
+	}, {
+		key: 'setItems',
+		value: function setItems(is) {
+			if (this._sorter) {
+				is = _.sortBy(is, this._sorter);
+			}
+			this[this._zArrayKey] = is;
+			doSub.call(this, is);
+		}
+	}, {
+		key: 'removeItems',
+		value: function removeItems(is) {
+			if (!_.isArray(is)) is = [is];
+			var arr = _.without(this[this._zArrayKey], is);
+			if (arr.length < this[this._zArrayKey].length) {
+				this[this._zArrayKey] = arr;
+			}
+		}
+	}, {
+		key: 'subscribe',
+		value: function subscribe(onNext) {
+			this.subject.pluck(this._zArrayKey).subscribe(onNext);
+		}
+	}, {
+		key: 'subscribeEach',
+		value: function subscribeEach(onNext, onCompleted, onError) {
+			return this.itemChangeSubject.subscribe(onNext, onCompleted, onError);
+		}
+	}, {
+		key: '_itemChanged',
+		value: function _itemChanged(i) {
+			this.itemChangeSubject.onNext(i.obj);
+			var arr = this[this._zArrayKey];
+			var initialI = _.indexOf(arr, i.obj);
+			var finalI;
+			if (this._zSortKey) {
+				if (this._zSortKey == i.key) {
 
-      try {
-        for (var _iterator2 = is[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var i = _step2.value;
+					arr = _.sortBy(arr, this._zSortKey);
+					finalI = _.indexOf(arr, i.obj);
+					if (finalI != initialI) {
+						this[this._zArrayKey] = arr;
+					}
+				}
+			} else if (this._zSortFunc) {
+				arr = _.sortBy(arr, this._zSortFunc);
+				finalI = _.indexOf(arr, i.obj);
+				if (finalI != initialI) {
+					this[this._zArrayKey] = arr;
+				}
+			}
+		}
+	}, {
+		key: '_sorter',
+		get: function get() {
+			return this._zSortKey || this._zSortFunc;
+		}
+	}]);
 
-          if (i.superSubject) i.superSubject.subscribe(this._itemChanged.bind(this));
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      this[this._zArrayKey] = arr;
-    }
-  }, {
-    key: 'setItems',
-    value: function setItems(is) {
-      if (this._sorter) {
-        is = _.sortBy(is, this._sorter);
-      }
-      this[this._zArrayKey] = is;
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = is[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var i = _step3.value;
-
-          if (i.superSubject) i.superSubject.subscribe(this._itemChanged.bind(this));
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-    }
-  }, {
-    key: 'removeItems',
-    value: function removeItems(is) {
-      if (!_.isArray(is)) is = [is];
-      var arr = _.without(this[this._zArrayKey], is);
-      if (arr.length < this[this._zArrayKey].length) {
-        this[this._zArrayKey] = arr;
-      }
-    }
-  }, {
-    key: 'subscribe',
-    value: function subscribe(onNext) {
-      this.subject.pluck(this._zArrayKey).subscribe(onNext);
-    }
-  }, {
-    key: 'subscribeEach',
-    value: function subscribeEach(onNext, onCompleted, onError) {
-      return this.itemChangeSubject.subscribe(onNext, onCompleted, onError);
-    }
-  }, {
-    key: '_itemChanged',
-    value: function _itemChanged(i) {
-      this.itemChangeSubject.onNext(i.obj);
-      if (this._zSortKey) {
-        if (this._zSortKey == i.key) {
-          var arr = this[this._zArrayKey];
-          var initialI = _.indexOf(arr, i.obj);
-          arr = _.sortBy(arr, this._zSortKey);
-          var finalI = _.indexOf(arr, i.obj);
-          if (finalI != initialI) {
-            this[this._zArrayKey] = arr;
-          }
-        }
-      } else if (this._zSortFunc) {
-        var arr = this[this._zArrayKey];
-        var initialI = _.indexOf(arr, i.obj);
-        arr = _.sortBy(arr, this._zSortFunc);
-        var finalI = _.indexOf(arr, i.obj);
-        if (finalI != initialI) {
-          this[this._zArrayKey] = arr;
-        }
-      }
-    }
-  }, {
-    key: '_sorter',
-    get: function get() {
-      return this._zSortKey || this._zSortFunc;
-    }
-  }]);
-
-  return Ll;
+	return Ll;
 }(Le);
 
 module.exports = Ll;
