@@ -1,6 +1,6 @@
 {
   "name": "lell",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Living entities and lists, easy observables, (almost) no boilerplate",
   "main": "dist/i.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "compile-test": "babel --preset es2015 -d test-dist/ test/",
     "prepublish": "npm run compile",
     "pretest": "npm run compile && npm run compile-test",
-    "test": "node ./test-dist/i.js"
+    "test": "babel-node ./test/i.js"
   },
   "repository": {
     "type": "git",

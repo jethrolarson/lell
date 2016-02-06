@@ -52,5 +52,10 @@ expect(p.power_level).to.equal(9001)
 
 var pWithFriend = new Person({name:'z',power_level:9000, friend:{name:'s',power_level:9001}})
 expect(pWithFriend.friend).to.be.an.instanceof(Person)
-
+pWithFriend.power_level++
+expect(pWithFriend._state).to.equal('updated')
+expect(pWithFriend._updates.length).to.equal(1)
+pWithFriend.power_level--
+expect(pWithFriend._state).to.equal('original')
+expect(pWithFriend._updates).to.be.empty
 

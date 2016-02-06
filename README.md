@@ -1,4 +1,4 @@
-# lell - [![Build Status](https://img.shields.io/github/stars/arkverse/lell.svg)](https://github.com/arkverse/lell) [![Latest Stable Version](https://img.shields.io/npm/v/lell.svg)](https://www.npmjs.com/package/lell) [![Build Status](http://img.shields.io/travis/arkverse/lell.svg)](https://travis-ci.org/arkverse/lell) [![Code Climate](http://img.shields.io/codeclimate/github/arkverse/lell.svg)](https://codeclimate.com/github/arkverse/lell) [![License](http://img.shields.io/:license-mit-blue.svg)](http://arkverse.mit-license.org) [![Badges](http://img.shields.io/:badges-5/5-ff6799.svg)](https://github.com/badges/badgerbadgerbadger) 
+# lell - [![Build Status](https://img.shields.io/github/stars/arkverse/lell.svg)](https://github.com/arkverse/lell) [![Latest Stable Version](https://img.shields.io/npm/v/lell.svg)](https://www.npmjs.com/package/lell) [![Build Status](http://img.shields.io/travis/arkverse/lell.svg)](https://travis-ci.org/arkverse/lell) [![Code Climate](http://img.shields.io/codeclimate/github/arkverse/lell.svg)](https://codeclimate.com/github/arkverse/lell) [![License](http://img.shields.io/:license-mit-blue.svg)](http://arkverse.mit-license.org) [![Badges](http://img.shields.io/:badges-5/5-ff6799.svg)](https://github.com/badges/badgerbadgerbadger)
 Living entities (Le) and lists (Ll), built off rx. Enjoy a reactive model with (almost) no boilerplate
 
 Very small payload and learning curve, enormous power.
@@ -93,20 +93,15 @@ aLivingPerson.power_level++
 
 ##### An observable class
 Extending an Le is only necessary if you can't init with all your properties or you just want convenience methods (like ajax requests)
-The living properties are only the ones we initialize with, so we have have to make sure our initial state holds all keys we wish to cause updates
+The living properties are only the ones we initialize with, so we have have to make sure our initial state holds all keys we wish to cause updates which is set in the `_defaults` method
 ```javascript
 import {Le} from 'lell'
 import _ from 'lodash'
 
-var defaultState = {
-  name:'',
-  power_level:9000
-}
-
 class Person extends Le {
-  constructor(state) {
-    state = state ? _.defaults(state, defaultState) : Object.assign({}, defaultState)
-    super(state)
+  _defaults() {
+    // having defaults makes these fields observable even if you haven't initialized with them
+    return {name:'', power_level:0}
   }
   doSomeAsyncWork() {
     $.get('http://google.com', (data) => {
@@ -124,6 +119,62 @@ aLivingPerson.name = 'z'
 
 aLivingPerson.doSomeAsyncWork()
 // z
+```
+
+##### Entity Mapping
+
+Provide a map in your Le subclass so that an initial payload is initialized with Le's
+
+```javascript
+class Person extends Le {
+  _map() {
+    return {friends:[Person], bestFriend:Person}
+  }
+}
+
+var friendlyPerson = new Person({
+  name:'z',
+  bestFriend:{
+    name:'s',
+    power_level:9000
+  },
+  friends:[
+    {
+      name:'b',
+      power_level:9001
+    },
+    {
+      name:'n',
+      power_level:9002
+    }
+  ]
+})
+// subscribe to bestFriend changes
+friendlyPerson.bestFriend.subscribe((bf) => console.log(bf.power_level))
+friendlyPerson.friends[0].subscribe((f) => console.log(f.power_level))
+```
+
+##### Some state information
+Le's have state information you can use to help your web interfaces, ie, agnostic add/edit react views
+```javascript
+var p = new Person()
+console.log(p._state)
+//new
+p.power_level = 9000
+console.log(p._state)
+//new
+console.log(p._updates)
+// ["power_level"]
+
+var ep = new Person({name:'z', power_level:9000})
+console.log(ep._state)
+// original
+ep.power_level++
+console.log(ep._state)
+// updated
+ep.power_level--
+console.log(ep._state)
+// original
 ```
 
 ##### Rx.Observable available

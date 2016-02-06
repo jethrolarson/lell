@@ -72,6 +72,9 @@ var Le = function () {
 		this._state = state ? 'original' : 'new';
 		this._updates = [];
 		state = _.defaults(state || {}, this._defaults());
+		Object.defineProperty(this, '_original_state', {
+			value: state
+		});
 		_.each(state, function (s, k) {
 			var _Object$definePropert;
 
@@ -108,13 +111,21 @@ var Le = function () {
 	_createClass(Le, [{
 		key: '_addUpdate',
 		value: function _addUpdate(k) {
+			if (this[k] != this._original_state[k]) {
+				if (this._updates.indexOf(k) == -1) this._updates.push(k);
+			} else {
+				if (this._updates.indexOf(k) > -1) {
+					this._updates = this._updates.filter(function (i) {
+						return i != k;
+					});
+				}
+			}
 			this._updatedStateIfNecessary();
-			if (this._updates.indexOf(k) == -1) this._updates.push(k);
 		}
 	}, {
 		key: '_updatedStateIfNecessary',
 		value: function _updatedStateIfNecessary() {
-			if (this._state != 'new') this._state = 'updated';
+			if (this._state != 'new') this._state = this._updates.length ? 'updated' : 'original';
 		}
 	}, {
 		key: '_map',

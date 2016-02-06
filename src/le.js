@@ -36,6 +36,9 @@ class Le {
 		this._state = state ? 'original' : 'new'
 		this._updates = []
 		state = _.defaults((state || {}), this._defaults())
+		Object.defineProperty(this, '_original_state', {
+			value:state
+		})
 		_.each(state, (s, k) => {
 			if (k == '_actions')
 				return
@@ -73,13 +76,19 @@ class Le {
 		}
 	}
 	_addUpdate(k) {
+		if (this[k] != this._original_state[k]) {
+			if (this._updates.indexOf(k) == -1)
+				this._updates.push(k)
+		} else {
+			if (this._updates.indexOf(k) > -1) {
+				this._updates = this._updates.filter((i) => i != k)
+			}
+		}
 		this._updatedStateIfNecessary()
-		if (this._updates.indexOf(k) == -1)
-			this._updates.push(k)
 	}
 	_updatedStateIfNecessary() {
 		if (this._state != 'new')
-			this._state = 'updated'
+			this._state = this._updates.length ? 'updated' : 'original'
 	}
 	_map() {
 		return {}
