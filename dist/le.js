@@ -2,6 +2,8 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -73,6 +75,7 @@ var Le = function () {
 		this._updates = [];
 		state = _.defaults(state || {}, this._defaults());
 		Object.defineProperty(this, '_original_state', {
+			writable: true,
 			value: state
 		});
 		_.each(state, function (s, k) {
@@ -194,10 +197,47 @@ var Le = function () {
 			return {};
 		}
 	}, {
+		key: '_commit',
+		value: function _commit() {
+			this._state = 'original';
+			this._updates = [];
+			var j = this.toJSON();
+			var m = this._map();
+			var _iteratorNormalCompletion3 = true;
+			var _didIteratorError3 = false;
+			var _iteratorError3 = undefined;
+
+			try {
+				for (var _iterator3 = Object.keys(j)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+					var k = _step3.value;
+
+					j[k] = getvalue(m, j[k], k);
+					if (_.isArray(j[k])) {
+						j[k] = [].concat(_toConsumableArray(j[k]));
+					}
+				}
+			} catch (err) {
+				_didIteratorError3 = true;
+				_iteratorError3 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion3 && _iterator3.return) {
+						_iterator3.return();
+					}
+				} finally {
+					if (_didIteratorError3) {
+						throw _iteratorError3;
+					}
+				}
+			}
+
+			this._original_state = j;
+		}
+	}, {
 		key: 'silentUpdate',
 		value: function silentUpdate(key, value) {
 			this['_z' + key] = value;
-			self._addUpdate(key);
+			this._addUpdate(key);
 		}
 	}, {
 		key: 'subscribe',

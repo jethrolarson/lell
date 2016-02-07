@@ -65,8 +65,23 @@ pWithFriend.bestFriends = friends
 expect(pWithFriend._state).to.equal('updated')
 expect(pWithFriend._updates).to.have.deep.property('[0]', 'bestFriends')
 friends = pWithFriend.bestFriends
-friends.pop()
+var popped = friends.pop()
 pWithFriend.bestFriends = friends
 expect(pWithFriend._state).to.equal('original')
 expect(pWithFriend._updates).to.be.empty
-
+pWithFriend.power_level++
+friends = pWithFriend.bestFriends
+friends.push(popped)
+pWithFriend._commit()
+expect(pWithFriend._state).to.equal('original')
+expect(pWithFriend._updates).to.be.empty
+friends = pWithFriend.bestFriends
+friends.pop()
+pWithFriend.bestFriends = friends
+expect(pWithFriend._state).to.equal('updated')
+expect(pWithFriend._updates).to.have.deep.property('[0]', 'bestFriends')
+friends = pWithFriend.bestFriends
+friends.push(popped)
+pWithFriend.bestFriends = friends
+expect(pWithFriend._state).to.equal('original')
+expect(pWithFriend._updates).to.be.empty

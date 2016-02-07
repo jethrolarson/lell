@@ -37,6 +37,7 @@ class Le {
 		this._updates = []
 		state = _.defaults((state || {}), this._defaults())
 		Object.defineProperty(this, '_original_state', {
+			writable:true,
 			value:state
 		})
 		_.each(state, (s, k) => {
@@ -127,6 +128,19 @@ class Le {
 	}
 	_defaults() {
 		return {}
+	}
+	_commit(){
+		this._state = 'original'
+		this._updates = []
+		var j = this.toJSON()
+		var m = this._map()
+		for (var k of Object.keys(j)) {
+			j[k] = getvalue(m, j[k], k)
+			if (_.isArray(j[k])) {
+				j[k] = [...j[k]]
+			}
+		}
+		this._original_state = j
 	}
 	silentUpdate(key, value) {
 		this['_z' + key] = value
