@@ -61,6 +61,9 @@ class Le {
 					}
 				}
 			})
+			if (_.isArray(s)) {
+				this._original_state[k] = [].concat(this[k])
+			}
 		})
 		this.subject = new Rx.Subject()
 		this.superSubject = new Rx.Subject()
@@ -76,9 +79,38 @@ class Le {
 		}
 	}
 	_addUpdate(k) {
-		if (this[k] != this._original_state[k]) {
-			if (this._updates.indexOf(k) == -1)
-				this._updates.push(k)
+		var doLog = k == 'bestFriends'
+		if (this[k] != this._original_state[k] || _.isArray(this[k])) {
+			if (!_.isArray(this[k])) {
+				if (this._updates.indexOf(k) == -1)
+					this._updates.push(k)
+			} else {
+				var a = this[k], ao = this._original_state[k]
+				var same = false
+				for (var e of a) {
+					if (ao.indexOf(e) == -1) {
+						same = false
+						break
+					} else {
+						if (ao.indexOf(e) != a.indexOf(e)) {
+							same = false
+							break
+						}
+					}
+					same = true
+				}
+				if (a.length < ao.length) {
+					same = false
+				}
+				if (!same) {
+					if (this._updates.indexOf(k) == -1)
+						this._updates.push(k)
+				} else {
+					if (this._updates.indexOf(k) > -1) {
+						this._updates = this._updates.filter((i) => i != k)
+					}
+				}
+			}
 		} else {
 			if (this._updates.indexOf(k) > -1) {
 				this._updates = this._updates.filter((i) => i != k)
@@ -98,6 +130,7 @@ class Le {
 	}
 	silentUpdate(key, value) {
 		this['_z' + key] = value
+		self._addUpdate(key)
 	}
 	subscribe(onNext, onCompleted, onError) {
 		return this.subject.subscribe(onNext, onCompleted, onError)

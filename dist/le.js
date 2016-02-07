@@ -95,6 +95,9 @@ var Le = function () {
 					self.superSubject.onNext({ obj: self, key: k });
 				}
 			}), _Object$definePropert));
+			if (_.isArray(s)) {
+				_this._original_state[k] = [].concat(_this[k]);
+			}
 		});
 		this.subject = new Rx.Subject();
 		this.superSubject = new Rx.Subject();
@@ -111,8 +114,61 @@ var Le = function () {
 	_createClass(Le, [{
 		key: '_addUpdate',
 		value: function _addUpdate(k) {
-			if (this[k] != this._original_state[k]) {
-				if (this._updates.indexOf(k) == -1) this._updates.push(k);
+			var doLog = k == 'bestFriends';
+			if (this[k] != this._original_state[k] || _.isArray(this[k])) {
+				if (!_.isArray(this[k])) {
+					if (this._updates.indexOf(k) == -1) this._updates.push(k);
+				} else {
+					var a = this[k],
+					    ao = this._original_state[k];
+					var same = false;
+					var _iteratorNormalCompletion2 = true;
+					var _didIteratorError2 = false;
+					var _iteratorError2 = undefined;
+
+					try {
+						for (var _iterator2 = a[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+							var e = _step2.value;
+
+							if (ao.indexOf(e) == -1) {
+								same = false;
+								break;
+							} else {
+								if (ao.indexOf(e) != a.indexOf(e)) {
+									same = false;
+									break;
+								}
+							}
+							same = true;
+						}
+					} catch (err) {
+						_didIteratorError2 = true;
+						_iteratorError2 = err;
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion2 && _iterator2.return) {
+								_iterator2.return();
+							}
+						} finally {
+							if (_didIteratorError2) {
+								throw _iteratorError2;
+							}
+						}
+					}
+
+					if (a.length < ao.length) {
+						same = false;
+					}
+					if (!same) {
+						if (this._updates.indexOf(k) == -1) this._updates.push(k);
+					} else {
+						if (this._updates.indexOf(k) > -1) {
+							this._updates = this._updates.filter(function (i) {
+								return i != k;
+							});
+						}
+					}
+				}
 			} else {
 				if (this._updates.indexOf(k) > -1) {
 					this._updates = this._updates.filter(function (i) {
@@ -141,6 +197,7 @@ var Le = function () {
 		key: 'silentUpdate',
 		value: function silentUpdate(key, value) {
 			this['_z' + key] = value;
+			self._addUpdate(key);
 		}
 	}, {
 		key: 'subscribe',
