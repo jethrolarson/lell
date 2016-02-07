@@ -130,7 +130,7 @@ class Le {
 	}
 	silentUpdate(key, value) {
 		this['_z' + key] = value
-		self._addUpdate(key)
+		this._addUpdate(key)
 	}
 	subscribe(onNext, onCompleted, onError) {
 		return this.subject.subscribe(onNext, onCompleted, onError)
