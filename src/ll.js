@@ -25,6 +25,7 @@ class Ll extends Le {
 					sort_func = i
 			}
 		})
+		super({[array_key]:array})
 		var e = this._entity()
 		if (e && array.length && !(array[0] instanceof e) ) {
 			var a = []
@@ -32,8 +33,8 @@ class Ll extends Le {
 				a.push(new e(la))
 			}
 			array = a
+			this.silentUpdate(array_key, array)
 		}
-		super({[array_key]:array})
 		this._zArrayKey = array_key
 		this._zSortKey = sort_key
 		this._zSortFunc = sort_func
