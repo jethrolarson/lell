@@ -25,14 +25,23 @@ class Ll extends Le {
 					sort_func = i
 			}
 		})
+		var e = this._entity()
+		if (e && array.length && !(array[0] instanceof e) ) {
+			var a = []
+			for (var la of array) {
+				a.push(new e(la))
+			}
+			array = a
+		}
 		super({[array_key]:array})
 		this._zArrayKey = array_key
 		this._zSortKey = sort_key
 		this._zSortFunc = sort_func
+
 		for (var l of array) {
-			if (l.superSubject) {
-				l.superSubject.subscribe(this._itemChanged.bind(this))
-			}
+			if (this._map())
+				if (l.superSubject)
+					l.superSubject.subscribe(this._itemChanged.bind(this))
 		}
 		this.itemChangeSubject = new Rx.Subject()
 		this.subject = new Rx.Subject()
