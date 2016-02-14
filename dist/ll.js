@@ -188,6 +188,11 @@ var Ll = function (_Le) {
 			}
 		}
 	}, {
+		key: '_entity',
+		value: function _entity() {
+			return null;
+		}
+	}, {
 		key: '_sorter',
 		get: function get() {
 			return this._zSortKey || this._zSortFunc;

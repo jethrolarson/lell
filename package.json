@@ -1,6 +1,6 @@
 {
   "name": "lell",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Living entities and lists, easy observables, (almost) no boilerplate",
   "main": "dist/i.js",
   "scripts": {

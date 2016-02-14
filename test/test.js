@@ -1,5 +1,5 @@
 
-import {Le, Ll} from '../dist/i'
+import {Le, Ll, State} from '../dist/i'
 import {expect} from 'chai'
 
 var livingPerson = new Le({name:'z',power_level:9000})
@@ -85,3 +85,15 @@ friends.push(popped)
 pWithFriend.bestFriends = friends
 expect(pWithFriend._state).to.equal('original')
 expect(pWithFriend._updates).to.be.empty
+
+class PeopleState extends State {
+  _map() {
+    return {person:Person}
+  }
+}
+
+var state = new PeopleState({person:{name:'z',power_level:9000}})
+expect(state.person).to.be.instanceof(Object)
+GLOBAL.window = {initialState:{person:{name:'z',power_level:9001}}}
+var state2 = new PeopleState()
+expect(state2.person).to.be.instanceof(Person)

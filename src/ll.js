@@ -101,6 +101,9 @@ class Ll extends Le {
 			}
 		}
 	}
+	_entity() {
+		return null
+	}
 	get _sorter() {
 		return this._zSortKey || this._zSortFunc
 	}
