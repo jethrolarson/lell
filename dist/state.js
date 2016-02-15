@@ -5,66 +5,66 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var State = function () {
-  function State(data) {
-    _classCallCheck(this, State);
+	function State(data) {
+		_classCallCheck(this, State);
 
-    if (data) {
-      Object.assign(this, data);
-    } else if (State._isClient() && window.initialState) {
-      this._boot();
-    }
-  }
+		if (data) {
+			Object.assign(this, data);
+		} else if (State._isClient() && window.initialState) {
+			this._boot();
+		}
+	}
 
-  _createClass(State, [{
-    key: '_new',
-    value: function _new(d) {
-      return new State(d);
-    }
-  }, {
-    key: '_boot',
-    value: function _boot() {
-      if (window.initialState) {
-        var i = window.initialState;
-        var map = this._map();
-        var _iteratorNormalCompletion = true;
-        var _didIteratorError = false;
-        var _iteratorError = undefined;
+	_createClass(State, [{
+		key: '_new',
+		value: function _new(d) {
+			return new State(d);
+		}
+	}, {
+		key: '_boot',
+		value: function _boot() {
+			if (window.initialState) {
+				var i = window.initialState;
+				var map = this._map();
+				var _iteratorNormalCompletion = true;
+				var _didIteratorError = false;
+				var _iteratorError = undefined;
 
-        try {
-          for (var _iterator = Object.keys(i)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-            var k = _step.value;
+				try {
+					for (var _iterator = Object.keys(i)[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+						var k = _step.value;
 
-            this[k] = map[k] ? new map[k](i[k]) : i[k];
-          }
-        } catch (err) {
-          _didIteratorError = true;
-          _iteratorError = err;
-        } finally {
-          try {
-            if (!_iteratorNormalCompletion && _iterator.return) {
-              _iterator.return();
-            }
-          } finally {
-            if (_didIteratorError) {
-              throw _iteratorError;
-            }
-          }
-        }
-      }
-    }
-  }, {
-    key: '_map',
-    value: function _map() {
-      return {};
-    }
-  }], [{
-    key: '_isClient',
-    value: function _isClient() {
-      return typeof window != 'undefined';
-    }
-  }]);
+						this[k] = map[k] ? new map[k](i[k]) : i[k];
+					}
+				} catch (err) {
+					_didIteratorError = true;
+					_iteratorError = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion && _iterator.return) {
+							_iterator.return();
+						}
+					} finally {
+						if (_didIteratorError) {
+							throw _iteratorError;
+						}
+					}
+				}
+			}
+		}
+	}, {
+		key: '_map',
+		value: function _map() {
+			return {};
+		}
+	}], [{
+		key: '_isClient',
+		value: function _isClient() {
+			return typeof window != 'undefined';
+		}
+	}]);
 
-  return State;
+	return State;
 }();
 
 module.exports = State;

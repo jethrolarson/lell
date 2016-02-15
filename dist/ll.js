@@ -170,21 +170,12 @@ var Ll = function (_Le) {
 			var arr = this[this._zArrayKey];
 			var initialI = _.indexOf(arr, i.obj);
 			var finalI;
-			if (this._zSortKey) {
-				if (this._zSortKey == i.key) {
-
-					arr = _.sortBy(arr, this._zSortKey);
-					finalI = _.indexOf(arr, i.obj);
-					if (finalI != initialI) {
-						this[this._zArrayKey] = arr;
-					}
-				}
-			} else if (this._zSortFunc) {
-				arr = _.sortBy(arr, this._zSortFunc);
-				finalI = _.indexOf(arr, i.obj);
-				if (finalI != initialI) {
-					this[this._zArrayKey] = arr;
-				}
+			if (this._zSortKey == i.key) return;
+			var s = this._sorter;
+			arr = _.sortBy(arr, s);
+			finalI = _.indexOf(arr, i.obj);
+			if (finalI != initialI) {
+				this[this._zArrayKey] = arr;
 			}
 		}
 	}, {

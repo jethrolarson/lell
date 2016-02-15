@@ -117,7 +117,6 @@ var Le = function () {
 	_createClass(Le, [{
 		key: '_addUpdate',
 		value: function _addUpdate(k) {
-			var doLog = k == 'bestFriends';
 			if (this[k] != this._original_state[k] || _.isArray(this[k])) {
 				if (!_.isArray(this[k])) {
 					if (this._updates.indexOf(k) == -1) this._updates.push(k);
