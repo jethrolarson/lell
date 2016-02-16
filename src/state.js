@@ -22,14 +22,14 @@ class State {
 					var eKey = entityKey(entity, true, init.pluralize)
 					this.__entityNames.push(eKey)
 					var es = this[eKey] = {}
-					var def = {default:[]}
+					var def = {[eKey]:[]}
 					if (e.defaultSort) {
 						def.defaultSort = e.defaultSort
 					}
 					es.default = new Ll(def)
 					this.__newEntityListeners[eKey] = [es.default]
 					for (var s of (e.sorts || [])) {
-						this.__newEntityListeners[eKey].push(es[s.name] = new Ll({[s.name]:[], sort_key:s.key}))
+						this.__newEntityListeners[eKey].push(es[s.name] = new Ll({[eKey]:[], sort_key:s.key}))
 					}
 				}
 				Backend.onNewEntity = (e) => {

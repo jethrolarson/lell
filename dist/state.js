@@ -43,7 +43,7 @@ var State = function () {
 						var eKey = entityKey(entity, true, init.pluralize);
 						this.__entityNames.push(eKey);
 						var es = this[eKey] = {};
-						var def = { default: [] };
+						var def = _defineProperty({}, eKey, []);
 						if (e.defaultSort) {
 							def.defaultSort = e.defaultSort;
 						}
@@ -59,7 +59,7 @@ var State = function () {
 
 								var s = _step3.value;
 
-								this.__newEntityListeners[eKey].push(es[s.name] = new Ll((_ref = {}, _defineProperty(_ref, s.name, []), _defineProperty(_ref, 'sort_key', s.key), _ref)));
+								this.__newEntityListeners[eKey].push(es[s.name] = new Ll((_ref = {}, _defineProperty(_ref, eKey, []), _defineProperty(_ref, 'sort_key', s.key), _ref)));
 							}
 						} catch (err) {
 							_didIteratorError3 = true;
