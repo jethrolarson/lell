@@ -181,7 +181,7 @@ var Ll = function (_Le) {
 	}, {
 		key: '_entity',
 		value: function _entity() {
-			return null;
+			return this.__entity;
 		}
 	}, {
 		key: '_sorter',

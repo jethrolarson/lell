@@ -93,7 +93,7 @@ class Ll extends Le {
 		}
 	}
 	_entity() {
-		return null
+		return this.__entity
 	}
 	get _sorter() {
 		return this._zSortKey || this._zSortFunc

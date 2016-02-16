@@ -1,5 +1,5 @@
 
-import {Le, Ll, State} from '../dist/i'
+import {Le, Ll, State} from '../src/i'
 import {expect} from 'chai'
 
 var livingPerson = new Le({name:'z',power_level:9000})
@@ -38,6 +38,9 @@ class Person extends Le {
   _map() {
     return {friend:Person, bestFriends:[Person]}
   }
+	static _identifier() {
+		return 'name'
+	}
   _defaults() {
     return {name:'',power_level:9000}
   }
@@ -88,12 +91,30 @@ expect(pWithFriend._updates).to.be.empty
 
 class PeopleState extends State {
   _map() {
-    return {person:Person}
+    return {activePerson:Person}
+  }
+  _entities() {
+    return [{entity:Person,defaultSort:'name',sorts:[{name:'powerSort',sort_key:'power_level'}]}]
   }
 }
 
+// test state
 var state = new PeopleState({person:{name:'z',power_level:9000}})
 expect(state.person).to.be.instanceof(Object)
-GLOBAL.window = {initialState:{person:{name:'z',power_level:9001}}}
+// test state map && window.initialState
+GLOBAL.window = {initialState:{activePerson:{name:'z',power_level:9001}}}
 var state2 = new PeopleState()
-expect(state2.person).to.be.instanceof(Person)
+console.log(state2)
+expect(state2.activePerson).to.be.instanceof(Person)
+
+//test backend
+var state3 = new PeopleState(true)
+var p1 = Person.new({name:'z',power_level:9000})
+var p2 = Person.new({name:'z',power_level:9001})
+expect(p1).to.be.equal(p2)
+expect(p1.power_level).to.equal(9001)
+
+//test state entities
+expect(state3.Person.default).to.be.instanceof(Ll)
+expect(state3.Person.powerSort).to.be.instanceof(Ll)
+expect(state3.Person.default.default.length).to.equal(1)

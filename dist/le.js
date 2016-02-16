@@ -2,6 +2,12 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _backend = require('./backend');
+
+var _backend2 = _interopRequireDefault(_backend);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -233,6 +239,40 @@ var Le = function () {
 			this._original_state = j;
 		}
 	}, {
+		key: '_fullUpdate',
+		value: function _fullUpdate(payload) {
+			var _iteratorNormalCompletion4 = true;
+			var _didIteratorError4 = false;
+			var _iteratorError4 = undefined;
+
+			try {
+				for (var _iterator4 = Object.keys(payload)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+					var k = _step4.value;
+
+					console.log('full update ' + k);
+					this.silentUpdate(k, payload[k]);
+				}
+			} catch (err) {
+				_didIteratorError4 = true;
+				_iteratorError4 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion4 && _iterator4.return) {
+						_iterator4.return();
+					}
+				} finally {
+					if (_didIteratorError4) {
+						throw _iteratorError4;
+					}
+				}
+			}
+
+			return this;
+		}
+	}, {
+		key: 'loadMore',
+		value: function loadMore(currentCount, sort) {}
+	}, {
 		key: 'silentUpdate',
 		value: function silentUpdate(key, value) {
 			this['_z' + key] = value;
@@ -252,6 +292,22 @@ var Le = function () {
 		key: 'toJSON',
 		value: function toJSON() {
 			return _.omit(this, ['toJSON', 'fill', 'superSubscribe', 'subscribe', 'subject', 'superSubject', 'Actions']);
+		}
+	}], [{
+		key: 'new',
+		value: function _new(state) {
+			console.log('static name ' + this.name + ' and ' + this._identifier());
+			if (_backend2.default.enabled && this.name != 'Le' && state && state[this._identifier()]) {
+				var ret = _backend2.default.get(this.name, state[this._identifier()]);
+				if (ret) return ret._fullUpdate(state);
+				return _backend2.default.set(new this(state), state[this._identifier()]);
+			}
+			return new this(state);
+		}
+	}, {
+		key: '_identifier',
+		value: function _identifier() {
+			return '_id';
 		}
 	}]);
 

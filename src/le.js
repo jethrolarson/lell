@@ -1,6 +1,8 @@
 
 var Rx = require('rx')
 var _ = require('lodash')
+import Backend from './backend'
+
 
 var getvalue = function(map = {}, v, k) {
 	if (!map[k])
@@ -79,6 +81,16 @@ class Le {
 			})
 		}
 	}
+	static new(state) {
+		console.log(`static name ${this.name} and ${this._identifier()}`)
+		if (Backend.enabled && this.name != 'Le' && state && state[this._identifier()]) {
+			var ret = Backend.get(this.name, state[this._identifier()])
+			if (ret)
+				return ret._fullUpdate(state)
+			return Backend.set(new this(state), state[this._identifier()])
+		}
+		return new this(state)
+	}
 	_addUpdate(k) {
 		if (this[k] != this._original_state[k] || _.isArray(this[k])) {
 			if (!_.isArray(this[k])) {
@@ -128,6 +140,9 @@ class Le {
 	_defaults() {
 		return {}
 	}
+	static _identifier() {
+		return '_id'
+	}
 	_commit(){
 		this._state = 'original'
 		this._updates = []
@@ -140,6 +155,16 @@ class Le {
 			}
 		}
 		this._original_state = j
+	}
+	_fullUpdate(payload) {
+		for (var k of Object.keys(payload)) {
+			console.log(`full update ${k}`)
+			this.silentUpdate(k, payload[k])
+		}
+		return this
+	}
+	loadMore(currentCount, sort) {
+		
 	}
 	silentUpdate(key, value) {
 		this['_z' + key] = value
