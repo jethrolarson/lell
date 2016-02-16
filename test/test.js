@@ -120,3 +120,9 @@ expect(state3.people.default.people.length).to.equal(1)
 
 //test use defaults
 expect(state3.people.powerSort.people.length).to.equal(1)
+
+GLOBAL.window = {initialState:{activePerson:{name:'p',power_level:9001}, people:{default:{people:[{name:'x',power_level:9002},{name:'y',power_level:9003}]}}}}
+var state4 = new PeopleState({collections:true, pluralize:true})
+console.log(JSON.stringify(state4.people.default.people, null, 2))
+expect(state4.people.default.people.length).to.equal(3)
+expect(state4.people.default.people[0]).to.be.instanceof(Person)

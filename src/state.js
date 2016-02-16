@@ -51,14 +51,18 @@ class State {
 		if (window.initialState) {
 			var i = window.initialState
 			var map = this._map()
+			var entities = this._entities()
 			for (var k of Object.keys(i)) {
-				var e = this._entities().find((e) => entityKey(e.entity, false, this.__pluralize) == k)
+				var e = entities.find((e) => {
+					var ek = entityKey(e.entity, true, this.__pluralize)
+					return ek == k
+				})
 				if (e) {
 					var ej = i[k]
 					var arr
 					for (var s of (e.sorts || [])) {
 						if (ej[s.name]) {
-							arr = ej[s.name][s.name]
+							arr = ej[s.name][k]
 							if (arr) {
 								arr = arr.map((x) => e.entity.new(x))
 								this[k][s.name].addItems(arr)
@@ -66,10 +70,9 @@ class State {
 						}
 					}
 					if (ej.default) {
-						arr = ej.default.default
+						arr = ej.default[k]
 						if (arr) {
 							arr = arr.map((x) => e.entity.new(x))
-							this[k].default.addItems(arr)
 						}
 					}
 					continue

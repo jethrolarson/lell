@@ -138,6 +138,7 @@ var State = function () {
 			if (window.initialState) {
 				var i = window.initialState;
 				var map = this._map();
+				var entities = this._entities();
 				var _iteratorNormalCompletion4 = true;
 				var _didIteratorError4 = false;
 				var _iteratorError4 = undefined;
@@ -146,8 +147,9 @@ var State = function () {
 					for (var _iterator4 = Object.keys(i)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
 						var k = _step4.value;
 
-						var e = this._entities().find(function (e) {
-							return entityKey(e.entity, false, _this2.__pluralize) == k;
+						var e = entities.find(function (e) {
+							var ek = entityKey(e.entity, true, _this2.__pluralize);
+							return ek == k;
 						});
 						if (e) {
 							var ej = i[k];
@@ -161,7 +163,7 @@ var State = function () {
 									var s = _step5.value;
 
 									if (ej[s.name]) {
-										arr = ej[s.name][s.name];
+										arr = ej[s.name][k];
 										if (arr) {
 											arr = arr.map(function (x) {
 												return e.entity.new(x);
@@ -186,12 +188,11 @@ var State = function () {
 							}
 
 							if (ej.default) {
-								arr = ej.default.default;
+								arr = ej.default[k];
 								if (arr) {
 									arr = arr.map(function (x) {
 										return e.entity.new(x);
 									});
-									this[k].default.addItems(arr);
 								}
 							}
 							continue;
