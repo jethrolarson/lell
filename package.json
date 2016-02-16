@@ -1,6 +1,6 @@
 {
   "name": "lell",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Living entities and lists, easy observables, (almost) no boilerplate",
   "main": "dist/i.js",
   "scripts": {
@@ -31,6 +31,7 @@
   "homepage": "https://github.com/arkverse/le#readme",
   "dependencies": {
     "lodash": "^3.10.1",
+    "pluralize": "^1.2.1",
     "rx": "^4.0.7"
   },
   "devDependencies": {

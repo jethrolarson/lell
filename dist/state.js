@@ -2,32 +2,35 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ll = require('./ll');
-
-var _ll2 = _interopRequireDefault(_ll);
-
-var _backend = require('./backend');
-
-var _backend2 = _interopRequireDefault(_backend);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var Ll = require('./ll');
+var Backend = require('./backend');
+var pluralize = require('pluralize');
+
+var entityKey = function entityKey(entity, isclass, doPluralize) {
+	var name = (isclass ? entity.name : entity.constructor.name).toLowerCase();
+	return doPluralize ? pluralize(name) : name;
+};
+
 var State = function () {
-	function State(data) {
+	function State() {
 		var _this = this;
+
+		var init = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
 		_classCallCheck(this, State);
 
-		if (data instanceof Object) {
-			Object.assign(this, data);
+		if (init.initialState) {
+			Object.assign(this, init.initialState);
 		} else if (State._isClient() && window.initialState) {
 			this.__entityNames = [];
-			if (data) {
-				_backend2.default.enabled = true;
+			if (init.collections) {
+				Backend.enabled = true;
+				this.__pluralize = init.pluralize;
+				this.__newEntityListeners = {};
 				var _iteratorNormalCompletion = true;
 				var _didIteratorError = false;
 				var _iteratorError = undefined;
@@ -37,41 +40,40 @@ var State = function () {
 						var e = _step.value;
 
 						var entity = e.entity;
-						this.__entityNames.push(entity.name);
-						if (e.sorts) {
-							var es = this[entity.name] = {};
-							var _iteratorNormalCompletion2 = true;
-							var _didIteratorError2 = false;
-							var _iteratorError2 = undefined;
+						var eKey = entityKey(entity, true, init.pluralize);
+						this.__entityNames.push(eKey);
+						var es = this[eKey] = {};
+						var def = { default: [] };
+						if (e.defaultSort) {
+							def.defaultSort = e.defaultSort;
+						}
+						es.default = new Ll(def);
+						this.__newEntityListeners[eKey] = [es.default];
+						var _iteratorNormalCompletion3 = true;
+						var _didIteratorError3 = false;
+						var _iteratorError3 = undefined;
 
+						try {
+							for (var _iterator3 = (e.sorts || [])[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+								var _ref;
+
+								var s = _step3.value;
+
+								this.__newEntityListeners[eKey].push(es[s.name] = new Ll((_ref = {}, _defineProperty(_ref, s.name, []), _defineProperty(_ref, 'sort_key', s.key), _ref)));
+							}
+						} catch (err) {
+							_didIteratorError3 = true;
+							_iteratorError3 = err;
+						} finally {
 							try {
-								for (var _iterator2 = (e.sorts || [])[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-									var _ref;
-
-									var s = _step2.value;
-
-									es[s.name] = new _ll2.default((_ref = {}, _defineProperty(_ref, s.name, []), _defineProperty(_ref, 'sort_key', s.key), _ref));
+								if (!_iteratorNormalCompletion3 && _iterator3.return) {
+									_iterator3.return();
 								}
-							} catch (err) {
-								_didIteratorError2 = true;
-								_iteratorError2 = err;
 							} finally {
-								try {
-									if (!_iteratorNormalCompletion2 && _iterator2.return) {
-										_iterator2.return();
-									}
-								} finally {
-									if (_didIteratorError2) {
-										throw _iteratorError2;
-									}
+								if (_didIteratorError3) {
+									throw _iteratorError3;
 								}
 							}
-
-							var def = { default: [] };
-							if (e.defaultSort) {
-								def.defaultSort = e.defaultSort;
-							}
-							es.default = new _ll2.default(def);
 						}
 					}
 				} catch (err) {
@@ -89,9 +91,33 @@ var State = function () {
 					}
 				}
 
-				_backend2.default.onNewEntity = function (e) {
-					if (_this.__entityNames.indexOf(e.constructor.name) > -1) {
-						_this[e.constructor.name].default.addItems(e);
+				Backend.onNewEntity = function (e) {
+					var n = entityKey(e, false, _this.__pluralize);
+					if (_this.__newEntityListeners[n]) {
+						var _iteratorNormalCompletion2 = true;
+						var _didIteratorError2 = false;
+						var _iteratorError2 = undefined;
+
+						try {
+							for (var _iterator2 = _this.__newEntityListeners[n][Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+								var ll = _step2.value;
+
+								ll.addItems(e);
+							}
+						} catch (err) {
+							_didIteratorError2 = true;
+							_iteratorError2 = err;
+						} finally {
+							try {
+								if (!_iteratorNormalCompletion2 && _iterator2.return) {
+									_iterator2.return();
+								}
+							} finally {
+								if (_didIteratorError2) {
+									throw _iteratorError2;
+								}
+							}
+						}
 					}
 				};
 			}
@@ -107,35 +133,35 @@ var State = function () {
 	}, {
 		key: '_boot',
 		value: function _boot() {
+			var _this2 = this;
+
 			if (window.initialState) {
 				var i = window.initialState;
 				var map = this._map();
-				var _iteratorNormalCompletion3 = true;
-				var _didIteratorError3 = false;
-				var _iteratorError3 = undefined;
+				var _iteratorNormalCompletion4 = true;
+				var _didIteratorError4 = false;
+				var _iteratorError4 = undefined;
 
 				try {
-					for (var _iterator3 = Object.keys(i)[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-						var k = _step3.value;
+					for (var _iterator4 = Object.keys(i)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+						var k = _step4.value;
 
-						console.log('boot ' + k);
 						var e = this._entities().find(function (e) {
-							return e.entity.constructor.name == k;
+							return entityKey(e.entity, false, _this2.__pluralize) == k;
 						});
 						if (e) {
-							console.log(e);
-							console.log('resolving entity');
 							var ej = i[k];
-							var _iteratorNormalCompletion4 = true;
-							var _didIteratorError4 = false;
-							var _iteratorError4 = undefined;
+							var arr;
+							var _iteratorNormalCompletion5 = true;
+							var _didIteratorError5 = false;
+							var _iteratorError5 = undefined;
 
 							try {
-								for (var _iterator4 = (e.sorts || [])[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-									var s = _step4.value;
+								for (var _iterator5 = (e.sorts || [])[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+									var s = _step5.value;
 
 									if (ej[s.name]) {
-										var arr = ej[s.name][s.name];
+										arr = ej[s.name][s.name];
 										if (arr) {
 											arr = arr.map(function (x) {
 												return e.entity.new(x);
@@ -145,22 +171,22 @@ var State = function () {
 									}
 								}
 							} catch (err) {
-								_didIteratorError4 = true;
-								_iteratorError4 = err;
+								_didIteratorError5 = true;
+								_iteratorError5 = err;
 							} finally {
 								try {
-									if (!_iteratorNormalCompletion4 && _iterator4.return) {
-										_iterator4.return();
+									if (!_iteratorNormalCompletion5 && _iterator5.return) {
+										_iterator5.return();
 									}
 								} finally {
-									if (_didIteratorError4) {
-										throw _iteratorError4;
+									if (_didIteratorError5) {
+										throw _iteratorError5;
 									}
 								}
 							}
 
 							if (ej.default) {
-								var arr = ej.default.default;
+								arr = ej.default.default;
 								if (arr) {
 									arr = arr.map(function (x) {
 										return e.entity.new(x);
@@ -173,16 +199,16 @@ var State = function () {
 						this[k] = map[k] ? map[k].new(i[k]) : i[k];
 					}
 				} catch (err) {
-					_didIteratorError3 = true;
-					_iteratorError3 = err;
+					_didIteratorError4 = true;
+					_iteratorError4 = err;
 				} finally {
 					try {
-						if (!_iteratorNormalCompletion3 && _iterator3.return) {
-							_iterator3.return();
+						if (!_iteratorNormalCompletion4 && _iterator4.return) {
+							_iterator4.return();
 						}
 					} finally {
-						if (_didIteratorError3) {
-							throw _iteratorError3;
+						if (_didIteratorError4) {
+							throw _iteratorError4;
 						}
 					}
 				}

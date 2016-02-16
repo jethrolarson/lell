@@ -249,7 +249,6 @@ var Le = function () {
 				for (var _iterator4 = Object.keys(payload)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
 					var k = _step4.value;
 
-					console.log('full update ' + k);
 					this.silentUpdate(k, payload[k]);
 				}
 			} catch (err) {
@@ -269,9 +268,6 @@ var Le = function () {
 
 			return this;
 		}
-	}, {
-		key: 'loadMore',
-		value: function loadMore(currentCount, sort) {}
 	}, {
 		key: 'silentUpdate',
 		value: function silentUpdate(key, value) {
@@ -296,7 +292,6 @@ var Le = function () {
 	}], [{
 		key: 'new',
 		value: function _new(state) {
-			console.log('static name ' + this.name + ' and ' + this._identifier());
 			if (_backend2.default.enabled && this.name != 'Le' && state && state[this._identifier()]) {
 				var ret = _backend2.default.get(this.name, state[this._identifier()]);
 				if (ret) return ret._fullUpdate(state);

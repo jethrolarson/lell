@@ -99,22 +99,21 @@ class PeopleState extends State {
 }
 
 // test state
-var state = new PeopleState({person:{name:'z',power_level:9000}})
+var state = new PeopleState({initialState:{person:{name:'z',power_level:9000}}})
 expect(state.person).to.be.instanceof(Object)
 // test state map && window.initialState
 GLOBAL.window = {initialState:{activePerson:{name:'z',power_level:9001}}}
 var state2 = new PeopleState()
-console.log(state2)
 expect(state2.activePerson).to.be.instanceof(Person)
 
 //test backend
-var state3 = new PeopleState(true)
+var state3 = new PeopleState({collections:true,pluralize:true})
 var p1 = Person.new({name:'z',power_level:9000})
 var p2 = Person.new({name:'z',power_level:9001})
 expect(p1).to.be.equal(p2)
 expect(p1.power_level).to.equal(9001)
 
 //test state entities
-expect(state3.Person.default).to.be.instanceof(Ll)
-expect(state3.Person.powerSort).to.be.instanceof(Ll)
-expect(state3.Person.default.default.length).to.equal(1)
+expect(state3.people.default).to.be.instanceof(Ll)
+expect(state3.people.powerSort).to.be.instanceof(Ll)
+expect(state3.people.default.default.length).to.equal(1)

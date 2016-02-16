@@ -82,7 +82,6 @@ class Le {
 		}
 	}
 	static new(state) {
-		console.log(`static name ${this.name} and ${this._identifier()}`)
 		if (Backend.enabled && this.name != 'Le' && state && state[this._identifier()]) {
 			var ret = Backend.get(this.name, state[this._identifier()])
 			if (ret)
@@ -158,13 +157,9 @@ class Le {
 	}
 	_fullUpdate(payload) {
 		for (var k of Object.keys(payload)) {
-			console.log(`full update ${k}`)
 			this.silentUpdate(k, payload[k])
 		}
 		return this
-	}
-	loadMore(currentCount, sort) {
-		
 	}
 	silentUpdate(key, value) {
 		this['_z' + key] = value
