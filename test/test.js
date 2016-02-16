@@ -94,7 +94,7 @@ class PeopleState extends State {
     return {activePerson:Person}
   }
   _entities() {
-    return [{entity:Person,defaultSort:'name',sorts:[{name:'powerSort',sort_key:'power_level'}]}]
+    return [{entity:Person,defaultSort:'name',sorts:[{name:'powerSort',sort_key:'power_level',useDefault:true}]}]
   }
 }
 
@@ -117,3 +117,6 @@ expect(p1.power_level).to.equal(9001)
 expect(state3.people.default).to.be.instanceof(Ll)
 expect(state3.people.powerSort).to.be.instanceof(Ll)
 expect(state3.people.default.default.length).to.equal(1)
+
+//test use defaults
+expect(state3.people.powerSort.powerSort.length).to.equal(1)
