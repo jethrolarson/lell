@@ -87,7 +87,7 @@ var Le = function () {
 		_.each(state, function (s, k) {
 			var _Object$definePropert;
 
-			if (k == '_actions') return;
+			if (k == '_actions' || k == '_updates' || k == '_state') return;
 			Object.defineProperties(_this, (_Object$definePropert = {}, _defineProperty(_Object$definePropert, '_z' + k, {
 				enumerable: false,
 				writable: true,

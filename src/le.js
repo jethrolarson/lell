@@ -43,7 +43,7 @@ class Le {
 			value:state
 		})
 		_.each(state, (s, k) => {
-			if (k == '_actions')
+			if (k == '_actions' || k == '_updates' || k == '_state')
 				return
 			Object.defineProperties(this, {
 				['_z' + k]:{
