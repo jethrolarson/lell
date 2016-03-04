@@ -165,6 +165,11 @@ console.log(p._state)
 //new
 console.log(p._updates)
 // ["power_level"]
+p._commit()
+console.log(p._state)
+// original
+console.log(p._updates)
+// []
 
 var ep = new Person({name:'z', power_level:9000})
 console.log(ep._state)
@@ -175,6 +180,14 @@ console.log(ep._state)
 ep.power_level--
 console.log(ep._state)
 // original
+ep.power_level++
+console.log(ep._state)
+// updated
+ep._commit()
+console.log(ep._state)
+// original
+console.log(ep._updates)
+// []
 ```
 
 ##### Rx.Observable available
