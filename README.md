@@ -104,8 +104,11 @@ class Person extends Le {
     return {name:'', power_level:0}
   }
   doSomeAsyncWork() {
-    $.get('http://google.com', (data) => {
-      this.power_level++
+    superagent
+      .post('/increase_powerlevel')
+      .send(this)
+      .end((err, data) => {
+        this.power_level++
     })
   }
 }
