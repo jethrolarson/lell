@@ -1,9 +1,11 @@
 # lell - [![Build Status](https://img.shields.io/github/stars/arkverse/lell.svg)](https://github.com/arkverse/lell) [![Latest Stable Version](https://img.shields.io/npm/v/lell.svg)](https://www.npmjs.com/package/lell) [![NPM Downloads](https://img.shields.io/npm/dm/lell.svg)](https://www.npmjs.com/package/lell) [![Build Status](http://img.shields.io/travis/arkverse/lell.svg)](https://travis-ci.org/arkverse/lell) [![Code Climate](http://img.shields.io/codeclimate/github/arkverse/lell.svg)](https://codeclimate.com/github/arkverse/lell) [![License](http://img.shields.io/:license-mit-blue.svg)](http://arkverse.mit-license.org) 
-Living entities (Le) and lists (Ll), built off rx. Enjoy a reactive model with (almost) no boilerplate
 
-Very small payload and learning curve, enormous power.
+Make all 
 
-Currently using this as our app store with React, beats flux anyday
+
+Very small learning curve, enormous power.
+
+Freedom. No pattern.
 
 ## Quick Use
 
@@ -158,7 +160,7 @@ friendlyPerson.friends[0].subscribe((f) => console.log(f.power_level))
 ```
 
 ##### Some state information
-Le's have state information you can use to help your web interfaces, ie, agnostic add/edit react views
+Le's have state information you can use to help your web interfaces, ie, agnostic new/edit react views
 ```javascript
 var p = new Person()
 console.log(p._state)
