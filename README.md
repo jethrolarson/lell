@@ -57,7 +57,7 @@ class Person extends React.Component {
 
 Via npm:
 ```
-npm install --save le
+npm install --save lell
 ```
 
 Then require/import:
