@@ -1,6 +1,6 @@
 # lell - [![Build Status](https://img.shields.io/github/stars/arkverse/lell.svg)](https://github.com/arkverse/lell) [![Latest Stable Version](https://img.shields.io/npm/v/lell.svg)](https://www.npmjs.com/package/lell) [![NPM Downloads](https://img.shields.io/npm/dm/lell.svg)](https://www.npmjs.com/package/lell) [![Build Status](http://img.shields.io/travis/arkverse/lell.svg)](https://travis-ci.org/arkverse/lell) [![Code Climate](http://img.shields.io/codeclimate/github/arkverse/lell.svg)](https://codeclimate.com/github/arkverse/lell) [![License](http://img.shields.io/:license-mit-blue.svg)](http://arkverse.mit-license.org) 
 
-Make all your data observable with changing the way you do anything
+Make all your data observable without changing the way you do anything
 
 Very small learning curve, enormous power.
 
